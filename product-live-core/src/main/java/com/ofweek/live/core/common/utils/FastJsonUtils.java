@@ -21,7 +21,7 @@ public class FastJsonUtils {
 		serializerFeature = (SerializerFeature[]) lists.toArray(new SerializerFeature[1]);
 	}
 
-	public static <T> T parseObject(String text, Class<T> type) throws Exception {
+	public static <T> T parseObject(String text, Class<T> type) {
 		return JSON.parseObject(text, type);
 	}
 

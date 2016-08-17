@@ -1,7 +1,6 @@
 package com.ofweek.live.core.modules.sys.listener;
 
 import java.io.IOException;
-import java.util.Properties;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -30,14 +29,9 @@ public class LogbackConfigListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         // 从web.xml中加载指定文件名的日志配置文件
-        //String logbackConfigLocation = sce.getServletContext().getInitParameter(CONFIG_LOCATION);
-        Properties props = System.getProperties();
-        System.out.println(props);
-        //String fn = sce.getServletContext().getRealPath(logbackConfigLocation);
         String fn = null;
 		try {
 			fn = ExternalResourceUtils.get("config:logback.xml").getFile().getCanonicalPath();
-			System.out.println(fn);
 		} catch (IOException e1) {
 			System.out.println("加载日志文件出错");
 			e1.printStackTrace();

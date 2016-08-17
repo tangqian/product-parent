@@ -6,8 +6,6 @@ package com.ofweek.live.core.common.persistence;
 import java.io.Serializable;
 import java.util.Map;
 
-import javax.xml.bind.annotation.XmlTransient;
-
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import com.alibaba.fastjson.annotation.JSONField;
@@ -45,12 +43,6 @@ public abstract class BaseEntity<T> implements Serializable {
 	 * 自定义SQL（SQL标识，SQL内容）
 	 */
 	protected Map<String, String> sqlMap;
-	
-	/**
-	 * 是否是新记录（默认：false），调用setIsNewRecord()设置新记录，使用自定义ID。
-	 * 设置为true后强制执行插入语句，ID不会自动生成，需从手动传入。
-	 */
-	protected boolean isNewRecord = false;
 
 	public BaseEntity() {
 		
@@ -70,7 +62,6 @@ public abstract class BaseEntity<T> implements Serializable {
 	}
 	
 	@JSONField(serialize = false)
-	@XmlTransient
 	public User getCurrentUser() {
 		if(currentUser == null){
 			currentUser = UserUtils.getUser();
@@ -83,7 +74,6 @@ public abstract class BaseEntity<T> implements Serializable {
 	}
 
 	@JSONField(serialize = false)
-	@XmlTransient
 	public Page<T> getPage() {
 		if (page == null){
 			page = new Page<T>();
@@ -97,7 +87,6 @@ public abstract class BaseEntity<T> implements Serializable {
 	}
 
 	@JSONField(serialize = false)
-	@XmlTransient
 	public Map<String, String> getSqlMap() {
 		if (sqlMap == null){
 			sqlMap = Maps.newHashMap();
@@ -124,17 +113,9 @@ public abstract class BaseEntity<T> implements Serializable {
 	 * 设置为true后强制执行插入语句，ID不会自动生成，需从手动传入。
      * @return
      */
-	public boolean getIsNewRecord() {
-        return isNewRecord || StringUtils.isBlank(getId());
+	public boolean isNewRecord() {
+        return StringUtils.isBlank(getId());
     }
-
-	/**
-	 * 是否是新记录（默认：false），调用setIsNewRecord()设置新记录，使用自定义ID。
-	 * 设置为true后强制执行插入语句，ID不会自动生成，需从手动传入。
-	 */
-	public void setIsNewRecord(boolean isNewRecord) {
-		this.isNewRecord = isNewRecord;
-	}
 
 	/**
 	 * 全局变量对象

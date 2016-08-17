@@ -1,6 +1,3 @@
-/**
- * Copyright &copy; 2012-2014 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- */
 package com.ofweek.live.web.sys.action;
 
 import java.util.Map;
@@ -10,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,14 +24,14 @@ import com.ofweek.live.core.common.utils.CookieUtils;
 import com.ofweek.live.core.common.utils.IdGen;
 import com.ofweek.live.core.common.utils.StringUtils;
 import com.ofweek.live.core.common.web.BaseController;
-import com.ofweek.live.core.modules.sys.security.FormAuthenticationFilter;
+import com.ofweek.live.core.modules.sys.security.LiveFormAuthenticationFilter;
 import com.ofweek.live.core.modules.sys.security.SystemAuthorizingRealm.Principal;
 import com.ofweek.live.core.modules.sys.utils.UserUtils;
 
 /**
  * 登录Controller
- * @author ThinkGem
- * @version 2013-5-31
+ * @author tangqian
+ * 
  */
 @Controller
 public class LoginController extends BaseController{
@@ -73,9 +71,10 @@ public class LoginController extends BaseController{
 
 		String username = WebUtils.getCleanParam(request, FormAuthenticationFilter.DEFAULT_USERNAME_PARAM);
 		boolean rememberMe = WebUtils.isTrue(request, FormAuthenticationFilter.DEFAULT_REMEMBER_ME_PARAM);
-		boolean mobile = WebUtils.isTrue(request, FormAuthenticationFilter.DEFAULT_MOBILE_PARAM);
 		String exception = (String)request.getAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
-		String message = (String)request.getAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM);
+		boolean mobile = WebUtils.isTrue(request, LiveFormAuthenticationFilter.DEFAULT_MOBILE_PARAM);
+		Integer type = LiveFormAuthenticationFilter.getType(request);
+		String message = (String)request.getAttribute(LiveFormAuthenticationFilter.DEFAULT_MESSAGE_PARAM);
 		
 		if (StringUtils.isBlank(message) || StringUtils.equals(message, "null")){
 			message = "用户或密码错误, 请重试.";
@@ -83,9 +82,10 @@ public class LoginController extends BaseController{
 
 		model.addAttribute(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM, username);
 		model.addAttribute(FormAuthenticationFilter.DEFAULT_REMEMBER_ME_PARAM, rememberMe);
-		model.addAttribute(FormAuthenticationFilter.DEFAULT_MOBILE_PARAM, mobile);
 		model.addAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME, exception);
-		model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, message);
+		model.addAttribute(LiveFormAuthenticationFilter.DEFAULT_MOBILE_PARAM, mobile);
+		model.addAttribute(LiveFormAuthenticationFilter.DEFAULT_TYPE_PARAM, type);
+		model.addAttribute(LiveFormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, message);
 		
 		if (logger.isDebugEnabled()) {
 			logger.debug("login fail, active session size: {}, message: {}, exception: {}", new Object[] {
@@ -94,7 +94,7 @@ public class LoginController extends BaseController{
 		
 		// 非授权异常，登录失败，验证码加1。
 		if (!UnauthorizedException.class.getName().equals(exception)){
-			model.addAttribute("isValidateCodeLogin", isValidateCodeLogin(username, true, false));
+			model.addAttribute("isValidateCodeLogin", isValidateCodeLogin(username, type, true, false));
 		}
 		
 		// 验证失败清空验证码
@@ -107,6 +107,7 @@ public class LoginController extends BaseController{
 		
 		return "modules/sys/sysLogin";
 	}
+	
 
 	/**
 	 * 登录成功，进入管理首页
@@ -117,8 +118,7 @@ public class LoginController extends BaseController{
 		Principal principal = UserUtils.getPrincipal();
 
 		// 登录成功后，验证码计算器清零
-		isValidateCodeLogin(principal.getLoginName(), false, true);
-		
+		isValidateCodeLogin(principal.getAccount(), principal.getType(), false, true);
 		if (logger.isDebugEnabled()){
 			logger.debug("show index, active session size: {}", sessionDAO.getActiveSessions(false).size());
 		}
@@ -141,28 +141,30 @@ public class LoginController extends BaseController{
 	
 	/**
 	 * 是否是验证码登录
-	 * @param useruame 用户名
+	 * @param account 用户名
+	 * @param type 用户类型
 	 * @param isFail 计数加1
 	 * @param clean 计数清零
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static boolean isValidateCodeLogin(String useruame, boolean isFail, boolean clean){
+	public static boolean isValidateCodeLogin(String account, Integer type, boolean isFail, boolean clean){
+		String failKey = account + "_" + type; 
 		Map<String, Integer> loginFailMap = (Map<String, Integer>)CacheUtils.get("loginFailMap");
 		if (loginFailMap==null){
 			loginFailMap = Maps.newHashMap();
 			CacheUtils.put("loginFailMap", loginFailMap);
 		}
-		Integer loginFailNum = loginFailMap.get(useruame);
+		Integer loginFailNum = loginFailMap.get(failKey);
 		if (loginFailNum==null){
 			loginFailNum = 0;
 		}
 		if (isFail){
 			loginFailNum++;
-			loginFailMap.put(useruame, loginFailNum);
+			loginFailMap.put(failKey, loginFailNum);
 		}
 		if (clean){
-			loginFailMap.remove(useruame);
+			loginFailMap.remove(failKey);
 		}
 		return loginFailNum >= 3;
 	}

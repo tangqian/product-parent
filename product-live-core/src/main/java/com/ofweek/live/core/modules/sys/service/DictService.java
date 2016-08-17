@@ -1,6 +1,3 @@
-/**
- * Copyright &copy; 2012-2014 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- */
 package com.ofweek.live.core.modules.sys.service;
 
 import java.util.List;
@@ -16,8 +13,8 @@ import com.ofweek.live.core.modules.sys.utils.DictUtils;
 
 /**
  * 字典Service
- * @author ThinkGem
- * @version 2014-05-16
+ * @author tangqian
+ * 
  */
 @Service
 @Transactional(readOnly = true)
@@ -33,7 +30,7 @@ public class DictService extends CrudService<DictDao, Dict> {
 
 	@Transactional(readOnly = false)
 	public void save(Dict dict) {
-		super.save(dict);
+		//super.save(dict);
 		CacheUtils.remove(DictUtils.CACHE_DICT_MAP);
 	}
 

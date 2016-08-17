@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ofweek.live.core.modules.audience.dao.AudienceDao">
+	
+	<select id="get" resultType="Audience">
+		SELECT
+			*
+		FROM live_audience
+		WHERE id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Audience">
+		SELECT
+			*
+		FROM live_audience
+		WHERE 1 = 1
+		<if test="name != null and name != ''">
+	  		AND	IFNULL(name,'') LIKE CONCAT('%', #{name}, '%')
+		</if>
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findAllList" resultType="Audience">
+		SELECT
+			*
+		FROM live_audience
+		ORDER BY id DESC
+	</select>
+		
+	<insert id="insert">
+		INSERT INTO live_audience (
+			id,
+			company,
+			country,
+			province,
+			address,
+			name,
+			job,
+			logo_id,
+			sex,
+			department,
+			mobile_phone,
+			telephone,
+			fax,
+			biz_type,
+			create_date,
+			update_date
+		) VALUES (
+			#{id},
+			#{company},
+			#{country},
+			#{province},
+			#{address},
+			#{name},
+			#{job},
+			#{logoId},
+			#{sex},
+			#{department},
+			#{mobilePhone},
+			#{telephone},
+			#{fax},
+			#{bizType},
+			#{createDate},
+			#{updateDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE live_audience
+		<set>
+			<if test="company != null">company = #{company},</if>
+			<if test="country != null">country = #{country},</if>
+			<if test="province != null">province = #{province},</if>
+			<if test="address != null">address = #{address},</if>
+			<if test="name != null">name = #{name},</if>
+			<if test="job != null">job = #{job},</if>
+			<if test="logoId != null">logo_id = #{logoId},</if>
+			<if test="sex != null">sex = #{sex},</if>
+			<if test="department != null">department = #{department},</if>
+			<if test="mobilePhone != null">mobile_phone = #{mobilePhone},</if>
+			<if test="telephone != null">telephone = #{telephone},</if>
+			<if test="fax != null">fax = #{fax},</if>
+			<if test="biz_type != null">biz_type = #{bizType},</if>
+			<if test="updateDate != null">update_date = #{updateDate},</if>
+	    </set>
+		WHERE
+			id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM live_audience  
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

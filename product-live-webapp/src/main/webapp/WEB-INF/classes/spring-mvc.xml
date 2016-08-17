@@ -53,6 +53,8 @@
 	
 	<!-- 拦截器配置，拦截顺序：先执行后定义的，排在第一位的最后执行。-->
 	<mvc:interceptors>
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+		<bean class="com.ofweek.live.core.modules.sys.interceptor.SSOInterceptor" />
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
 			<mvc:exclude-mapping path="/"/>
