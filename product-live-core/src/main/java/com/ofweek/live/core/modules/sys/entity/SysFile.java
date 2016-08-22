@@ -22,11 +22,7 @@ public class SysFile extends DataEntity<SysFile> {
 	
 	private Integer type;
 	
-	private Integer subjectId;
-	
 	private Integer subjectType;
-	
-	private java.util.Date createTime;
 	
 	private String createBy;
 
@@ -77,29 +73,13 @@ public class SysFile extends DataEntity<SysFile> {
 	public Integer getType() {
 		return this.type;
 	}
-	
-	public void setSubjectId(Integer value) {
-		this.subjectId = value;
-	}
-	
-	public Integer getSubjectId() {
-		return this.subjectId;
-	}
-	
+
 	public void setSubjectType(Integer value) {
 		this.subjectType = value;
 	}
 	
 	public Integer getSubjectType() {
 		return this.subjectType;
-	}
-	
-	public void setCreateTime(java.util.Date value) {
-		this.createTime = value;
-	}
-	
-	public java.util.Date getCreateTime() {
-		return this.createTime;
 	}
 	
 	public void setCreateBy(String value) {
@@ -109,5 +89,11 @@ public class SysFile extends DataEntity<SysFile> {
 	public String getCreateBy() {
 		return this.createBy;
 	}
-	
+
+	@Override
+	public void preInsert() {
+		User user = getCurrentUser();
+		setCreateBy(user == null ? "-1" : user.getId());
+		super.preInsert();
+	}
 }

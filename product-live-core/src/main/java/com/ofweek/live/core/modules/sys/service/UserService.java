@@ -21,7 +21,7 @@ public class UserService extends CrudService<UserDao, User> {
 	@Transactional(readOnly = false)
 	public void save(User entity) {
 		if (StringUtils.isBlank(entity.getId())){
-			entity.setId(SequenceUtils.getNextString("LiveUser"));
+			entity.setId(SequenceUtils.getNextString("User"));
 			entity.preInsert();
 			dao.insert(entity);
 		}else{

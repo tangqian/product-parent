@@ -60,8 +60,17 @@ public enum UserTypeEnum {
 	public static boolean isAudience(Integer type) {
 		return type != null && type == AUDIENCE.code;
 	}
+	
+	/**
+	 * @param type
+	 * @return
+	 */
+	public static boolean isSpeaker(Integer type) {
+		return type != null && type == SPEAKER.code;
+	}
 
 	private final int code;
 	private final String meaning;
+
 
 }

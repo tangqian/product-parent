@@ -8,7 +8,7 @@ import com.google.common.collect.Maps;
 import com.ofweek.live.core.common.utils.PropertiesLoader;
 
 /**
- * 展会网配置类
+ * 直播系统配置类
  * 
  * @author tangqian
  * @version 2016-02-24
@@ -35,6 +35,15 @@ public class LiveEnv {
 			map.put(key, value != null ? value : StringUtils.EMPTY);
 		}
 		return value;
+	}
+	
+	/**
+	 * 获取网站地址
+	 * @param key
+	 * @return
+	 */
+	public static String getWebSite() {
+		return getConfig("base.webSite");
 	}
 	
 	public static String getUploadRoot() {

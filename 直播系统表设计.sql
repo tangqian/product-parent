@@ -392,7 +392,7 @@ CREATE TABLE `sys_file` (
   `type` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '类型,0:图片,1:文件',
   `subject_id` int(9) DEFAULT NULL COMMENT '关联实体id',
   `subject_type` int(9) NOT NULL COMMENT '关联实体类型',
-  `create_time` datetime NOT NULL,
+  `create_date` datetime NOT NULL,
   `create_by` int(9) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文件表';
@@ -407,7 +407,7 @@ CREATE TABLE `sys_email` (
   `status` tinyint(3) NOT NULL DEFAULT '0' COMMENT '状态,0:待发送,1:发送成功,2:发送失败',
   `subject_id` int(9) NOT NULL COMMENT '关联实体id',
   `subject_type` int(9) NOT NULL COMMENT '关联实体类型',
-  `create_time` datetime NOT NULL,
+  `create_date` datetime NOT NULL,
   `send_time` datetime DEFAULT NULL COMMENT '发送时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='邮件记录表';

@@ -17,13 +17,13 @@ public class SequenceUtils {
 
 	private static SequenceDao sequenceDao = SpringContextHolder.getBean(SequenceDao.class);
 
-	private static final Map<String, KeyInfo> keyMap = new HashMap<String, KeyInfo>(32);
+	private static final Map<String, KeyInfo> keyMap = new HashMap<>(32);
 
-	private static final int POOL_SIZE = 20;
+	private static final int POOL_SIZE = 2;
 
 	/**
 	 * 获取下一个sequence值
-	 * 
+	 *
 	 * @param keyName
 	 * @return
 	 */

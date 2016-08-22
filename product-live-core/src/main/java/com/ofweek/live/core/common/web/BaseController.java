@@ -8,11 +8,13 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
 
+import com.ofweek.live.core.modules.sys.service.SysFileService;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.slf4j.Logger;
@@ -35,6 +37,9 @@ import com.ofweek.live.core.common.utils.FastJsonUtils;
  * @version 2013-3-23
  */
 public abstract class BaseController {
+
+	@Resource
+	protected SysFileService sysFileService;
 
 	/**
 	 * 日志对象

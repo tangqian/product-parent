@@ -95,7 +95,11 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	public static String getWeek() {
 		return formatDate(new Date(), "E");
 	}
-	
+
+	public DateUtils() {
+		super();
+	}
+
 	/**
 	 * 日期型字符串转化为日期 格式
 	 * { "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", 

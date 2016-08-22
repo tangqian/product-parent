@@ -27,20 +27,24 @@ public class SysFileUtils {
 		public String getMeaning() {
 			return meaning;
 		}
+
+		public static boolean isNotTemp(Integer isTemp) {
+			return isTemp != null && isTemp == TempEnum.NO.code;
+		}
 	}
 
 	public enum TypeEnum {
-		AUDIENCE_LOGO(10000, "audience/logo", "观众头像"),
+		AUDIENCE_LOGO(10000, "audience/logo", 0, "观众头像"),
 		
-		ROOM_COVER(20000, "room/cover", "直播房间封面图"),
+		ROOM_COVER(20000, "room/cover", 0, "直播房间封面图"),
 		
-		SPEAKER_LOGO(30000, "speaker/logo", "主播头像"),
-		SPEAKER_DATA(31000, "speaker/data", "主播资料"),
-		SPEAKER_SPEECH(32000, "speaker/speech", "主播演讲稿"),
-		SPEAKER_VIDEO(33000, "speaker/video", "主播视频"),
-		SPEAKER_VIDEO_COVER(33100, "speaker/videoCover", "主播视频封面图"),
+		SPEAKER_LOGO(30000, "speaker/logo", 0, "主播头像"),
+		SPEAKER_DATA(31000, "speaker/data", 1, "主播资料"),
+		SPEAKER_SPEECH(32000, "speaker/speech", 1, "主播演讲稿"),
+		SPEAKER_VIDEO(33000, "speaker/video", 1, "主播视频"),
+		SPEAKER_VIDEO_COVER(33100, "speaker/videoCover", 0, "主播视频封面图"),
 		
-		WAITER_LOGO(40000, "waiter/logo", "客服头像");
+		WAITER_LOGO(40000, "waiter/logo", 0, "客服头像");
 
 		/**
 		 * code值由两部分组成， 1位逻辑分类+4位业务细项分类组成。<br/>
@@ -55,11 +59,17 @@ public class SysFileUtils {
 		private String meaning;
 
 		/**
+		 * 文件类型 0:图片,1:文件
+		 */
+		private  Integer fileType;
+
+		/**
 		 * <默认构造函数>
 		 */
-		TypeEnum(Integer code, String classifyDir, String meaning) {
+		TypeEnum(Integer code, String classifyDir, Integer fileType, String meaning) {
 			this.code = code;
 			this.classifyDir = classifyDir;
+			this.fileType = fileType;
 			this.meaning = meaning;
 		}
 
@@ -96,6 +106,14 @@ public class SysFileUtils {
 				}
 			}
 			return ret == null ? "" : ret.meaning;
+		}
+
+		public Integer getFileType() {
+			return fileType;
+		}
+
+		public void setFileType(Integer fileType) {
+			this.fileType = fileType;
 		}
 	}
 }

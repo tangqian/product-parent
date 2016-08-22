@@ -40,6 +40,18 @@ public enum AuditStatusEnum {
 		return status != null && (status == PASS.code || status == NOPASS.code);
 	}
 
+	public static String getHtml(Integer status) {
+		String ret = "<span class='wait-pass'>待审核</span>";
+		if (status != null) {
+			if (status == PASS.code){
+				ret = "<span class='pass'>审核通过</span>";
+			}else if (status == NOPASS.code){
+				ret = "<span class='not-pass'>审核未通过</span>";
+			}
+		}
+		return  ret;
+	}
+
 	private final int code;
 	private final String meaning;
 

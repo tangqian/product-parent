@@ -1,8 +1,13 @@
 package com.ofweek.live.core.modules.sys.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+import com.ofweek.live.core.common.utils.FileUtils;
+import com.ofweek.live.core.modules.sys.utils.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,11 +19,7 @@ import com.ofweek.live.core.common.utils.StringUtils;
 import com.ofweek.live.core.modules.sys.dao.SysFileDao;
 import com.ofweek.live.core.modules.sys.entity.SysFile;
 import com.ofweek.live.core.modules.sys.entity.User;
-import com.ofweek.live.core.modules.sys.utils.FileServiceUtils;
-import com.ofweek.live.core.modules.sys.utils.RandomUtils;
-import com.ofweek.live.core.modules.sys.utils.SequenceUtils;
 import com.ofweek.live.core.modules.sys.utils.SysFileUtils.TypeEnum;
-import com.ofweek.live.core.modules.sys.utils.UserUtils;
 
 /**
  * 
@@ -31,72 +32,82 @@ public class SysFileService extends CrudService<SysFileDao, SysFile> {
 	@Override
 	@Transactional(readOnly = false)
 	public void save(SysFile entity) {
-		if (StringUtils.isBlank(entity.getId())) {
-			entity.setId(SequenceUtils.getNextString("SysFile"));
-			entity.preInsert();
-			dao.insert(entity);
-		} else {
-			entity.preUpdate();
-			dao.update(entity);
-		}
+		throw new UnsupportedOperationException();
 	}
 
-	public SysFile add(MultipartFile file, TypeEnum typeEnum, boolean isTemp) {
+	@Transactional(readOnly = false)
+	public SysFile save(String tempId, TypeEnum typeEnum) throws IOException {
+		SysFile tempFile = get(tempId);
+		if(SysFileUtils.TempEnum.isNotTemp(tempFile.getIsTemp())){//非临时文件，直接返回
+			return tempFile;
+		}
+
+		String targetId = SequenceUtils.getNextString("SysFile");
+		String targetUri = generatePath(typeEnum) + generateNewName(targetId, tempFile.getExt());
+		FileUtils.copyFile(getAbsolutePath(tempFile.getUri()), targetUri);
+
+		SysFile entity = new SysFile();
+		entity.setId(targetId);
+		entity.setUri(targetUri);
+		entity.setOriginalName(tempFile.getOriginalName());
+		entity.setSize(tempFile.getSize());
+		entity.setExt(tempFile.getExt());
+		entity.setIsTemp(SysFileUtils.TempEnum.NO.getCode());
+		entity.setType(typeEnum.getFileType());
+		entity.setSubjectType(typeEnum.getCode());
+
+		entity.preInsert();
+		dao.insert(entity);
+		return entity;
+	}
+
+	@Transactional(readOnly = false)
+	public SysFile saveTemp(MultipartFile file) throws IOException {
 		if (file == null || file.getSize() == 0)
 			return null;
 
 		String fileName = file.getOriginalFilename();
 		String ext = FileServiceUtils.getExt(fileName);
 
-		String relativePath = generatePath(typeEnum);
-		if (isTemp) {
-			relativePath = "temp/" + relativePath;
-		}
-		File targetFile = generateNewFile(relativePath, ext);
+		String relativePath = "temp/" + DateUtils.formatDate(new Date(), "yyyy-MM/");
+		String id = SequenceUtils.getNextString("SysFile");
+		String newFileName = generateNewName(id, ext);
 
-		try {
-			file.transferTo(targetFile);
-		} catch (Exception e) {
-			logger.error("保存文件失败", e);
-		}
+		File targetFile = new File(getAbsolutePath(relativePath), newFileName);
+		targetFile.mkdirs();
+		file.transferTo(targetFile);
 
 		SysFile entity = new SysFile();
-		entity.setId(SequenceUtils.getNextString("SysFile"));
-		entity.setUri(relativePath + targetFile.getName());
+		entity.setId(id);
+		entity.setUri(relativePath + newFileName);
 		entity.setOriginalName(fileName);
-		entity.setSize((int) targetFile.length());
+		entity.setSize((int) file.getSize());
 		entity.setExt(ext);
-		entity.setIsTemp(isTemp ? 1 : 0);
-		entity.setSubjectType(typeEnum.getCode());
+		entity.setIsTemp(SysFileUtils.TempEnum.YES.getCode());
+		entity.setType(0);
+		entity.setSubjectType(-1);
 
-		User user = UserUtils.getUser();
-		entity.setCreateBy(user == null ? "0" : user.getId());
 		entity.preInsert();
 		dao.insert(entity);
 		return entity;
+	}
+
+	private String generateNewName(String id, String ext) {
+		String timeIdStr = id + DateUtils.formatDate(new Date(), "yyyyMMddHHmmss");
+		return StringUtils.isEmpty(ext) ? timeIdStr : timeIdStr + "." + ext;
 	}
 
 	public String getAbsolutePath(String relativePath) {
 		return LiveEnv.getUploadRoot() + relativePath;
 	}
 
-	private File generateNewFile(String relativePath, String ext) {
-		String newName = generateRandomName(ext);
-		File targetFile = new File(getAbsolutePath(relativePath), newName);
-		if (!targetFile.exists()) {
-			targetFile.mkdirs();
-		} else {
-			while (targetFile.exists()) {
-				newName = generateRandomName(ext);
-				targetFile = new File(getAbsolutePath(relativePath), newName);
-			}
-		}
-		return targetFile;
-	}
-
+	/**
+	 * 生成存放路径，格式=分类名/yyyy-MM/ ,例audience/logo/2016-08
+	 * @param typeEnum
+	 * @return
+	 */
 	private String generatePath(TypeEnum typeEnum) {
-		Date now = new Date();
-		StringBuilder sb = new StringBuilder(typeEnum.getClassifyDir()).append('/').append(DateUtils.formatDate(now, "yyyy-MM")).append('/');
+		StringBuilder sb = new StringBuilder(typeEnum.getClassifyDir()).append('/').append(DateUtils.formatDate(new Date(), "yyyy-MM/"));
 		return sb.toString();
 	}
 

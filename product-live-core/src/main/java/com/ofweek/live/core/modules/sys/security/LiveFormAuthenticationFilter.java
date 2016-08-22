@@ -12,7 +12,9 @@ import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
 
 import com.ofweek.live.core.common.utils.StringUtils;
+import com.ofweek.live.core.modules.sys.entity.User;
 import com.ofweek.live.core.modules.sys.enums.UserTypeEnum;
+import com.ofweek.live.core.modules.sys.utils.UserUtils;
 
 /**
  * 表单验证（包含验证码）过滤类
@@ -63,7 +65,12 @@ public class LiveFormAuthenticationFilter extends FormAuthenticationFilter {
 
 	@Override
 	protected void issueSuccessRedirect(ServletRequest request, ServletResponse response) throws Exception {
-		WebUtils.issueRedirect(request, response, getSuccessUrl(), null, true);
+		String url = getSuccessUrl();
+		User user = UserUtils.getUser(); 
+		if(user != null && UserTypeEnum.isSpeaker(user.getType())) {
+			url = "speaker";
+		}
+		WebUtils.issueRedirect(request, response, url, null, true);
 	}
 
 	/**
