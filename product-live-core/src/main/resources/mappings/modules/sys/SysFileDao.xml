@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ofweek.live.core.modules.sys.dao.SysFileDao">
-	
+
 	<select id="get" resultType="SysFile">
 		SELECT
-			*
+		*
 		FROM sys_file
 		WHERE id = #{id}
 	</select>
-	
+
 	<select id="findList" resultType="SysFile">
 		SELECT
-			*
+		*
 		FROM sys_file
 		WHERE 1 = 1
 		<if test="name != null and name != ''">
-	  		AND	IFNULL(name,'') LIKE CONCAT('%', #{name}, '%')
+			AND IFNULL(name,'') LIKE CONCAT('%', #{name}, '%')
 		</if>
 		ORDER BY id DESC
 	</select>
-	
+
 	<select id="findAllList" resultType="SysFile">
 		SELECT
-			*
+		*
 		FROM sys_file
 		ORDER BY id DESC
 	</select>
 
 	<insert id="insert">
 		INSERT INTO sys_file (
-			id,
-			uri,
-			original_name,
-			size,
-			ext,
-			is_temp,
-			type,
-			subject_type,
-			create_date,
-			create_by
+		id,
+		uri,
+		original_name,
+		size,
+		ext,
+		is_temp,
+		type,
+		subject_type,
+		create_date,
+		create_by
 		) VALUES (
-			#{id},
-			#{uri},
-			#{originalName},
-			#{size},
-			#{ext},
-			#{isTemp},
-			#{type},
-			#{subjectType},
-			#{createDate},
-			#{createBy}
+		#{id},
+		#{uri},
+		#{originalName},
+		#{size},
+		#{ext},
+		#{isTemp},
+		#{type},
+		#{subjectType},
+		#{createDate},
+		#{createBy}
 		)
 	</insert>
 
@@ -63,14 +63,14 @@
 			<if test="isTemp != null">is_temp = #{isTemp},</if>
 			<if test="type != null">type = #{type},</if>
 			<if test="subjectType != null">subject_type = #{subjectType},</if>
-	    </set>
+		</set>
 		WHERE
-			id = #{id}
+		id = #{id}
 	</update>
-	
+
 	<update id="delete">
-		DELETE FROM sys_file  
+		DELETE FROM sys_file
 		WHERE id = #{id}
 	</update>
-	
+
 </mapper>

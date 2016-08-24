@@ -13,6 +13,8 @@ import com.ofweek.live.core.common.utils.Validate;
 public abstract class DataEntity<T> extends BaseEntity<T> {
 
 	private static final long serialVersionUID = 1L;
+
+	public static String NULL_REFERENCE_ID = "0";
 	
 	protected Date createDate;	// 创建日期
 	protected Date updateDate;	// 更新日期
