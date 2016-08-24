@@ -3,11 +3,7 @@ package com.ofweek.live.core.modules.sys.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
-import com.ofweek.live.core.common.utils.FileUtils;
-import com.ofweek.live.core.modules.sys.utils.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,10 +11,13 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ofweek.live.core.common.config.LiveEnv;
 import com.ofweek.live.core.common.service.CrudService;
 import com.ofweek.live.core.common.utils.DateUtils;
+import com.ofweek.live.core.common.utils.FileUtils;
 import com.ofweek.live.core.common.utils.StringUtils;
 import com.ofweek.live.core.modules.sys.dao.SysFileDao;
 import com.ofweek.live.core.modules.sys.entity.SysFile;
-import com.ofweek.live.core.modules.sys.entity.User;
+import com.ofweek.live.core.modules.sys.utils.FileServiceUtils;
+import com.ofweek.live.core.modules.sys.utils.SequenceUtils;
+import com.ofweek.live.core.modules.sys.utils.SysFileUtils;
 import com.ofweek.live.core.modules.sys.utils.SysFileUtils.TypeEnum;
 
 /**
@@ -109,9 +108,5 @@ public class SysFileService extends CrudService<SysFileDao, SysFile> {
 	private String generatePath(TypeEnum typeEnum) {
 		StringBuilder sb = new StringBuilder(typeEnum.getClassifyDir()).append('/').append(DateUtils.formatDate(new Date(), "yyyy-MM/"));
 		return sb.toString();
-	}
-
-	private String generateRandomName(String ext) {
-		return StringUtils.isEmpty(ext) ? RandomUtils.getRandomString(10) : RandomUtils.getRandomString(10) + "." + ext;
 	}
 }
