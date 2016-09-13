@@ -129,14 +129,14 @@
 				</dependencies>
 			</plugin>
 			
-			<plugin>
+			<!-- <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>wagon-maven-plugin</artifactId>
                 <version>1.0</version>
                 <executions>
                     <execution>
                         <id>upload-deploy</id>
-                        <phase>test</phase>
+                        <phase>install</phase>
                         <goals>
                             <goal>upload</goal>
                             <goal>sshexec</goal>
@@ -154,7 +154,7 @@
                     </execution>
                     <execution>
                         <id>upload-static</id>
-                        <phase>test</phase>
+                        <phase>install</phase>
                         <goals>
                             <goal>upload</goal>
                         </goals>
@@ -164,7 +164,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin> -->
 
 		</plugins>
 	</build>
