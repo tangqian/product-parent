@@ -23,15 +23,10 @@ public class SSOInterceptor extends HandlerInterceptorAdapter {
 	 * 日志对象
 	 */
 	private static Logger logger = LoggerFactory.getLogger(SSOInterceptor.class);
-	
-	@Resource
-	private AudienceService audienceService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		String uri = request.getServletPath();
-    	System.out.println(uri);
-		// 如果是静态文件，则不创建SESSION
 		if (Servlets.isStaticFile(uri)){
 	        return true;
 		}
@@ -43,7 +38,6 @@ public class SSOInterceptor extends HandlerInterceptorAdapter {
         
         String account = WebUtils.getAccountFromCookie(request);
         if (StringUtils.isNotBlank(account)) {
-        	
             String ak = WebUtils.getAkFromCookie(request);
             String expectedAk = AccessKeyUtils.encode(account, account, "ofweek");
             if (expectedAk.equals(ak)) {

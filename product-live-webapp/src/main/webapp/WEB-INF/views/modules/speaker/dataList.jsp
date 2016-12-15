@@ -4,12 +4,7 @@
 <head>
     <meta name="decorator" content="speaker"/>
     <title>下载资料管理</title>
-    <script type="text/javascript">
-    	$(document).ready(function(){
-    		$("#sm_speaker_data").addClass('menu-son-cur');
-    		$("#headCrumbs").append("<span class='em1'>></span>").append("<span>下载资料管理</span>");
-    	})
-    </script>
+	<link rel="stylesheet" href="${webSite}/static/web/plugins/uploadify/css/uploadify.css" />
 </head>
 
 <body>
@@ -18,16 +13,16 @@
     <h1 class="page-title">下载资料管理</h1>
     <div class="clearfix mt5">
         <div class="fl mr20">
-            <a href="${ctx}/speaker/data/form" class="button-upload">上传资料</a>
+            <a href="${ctx}/speaker/data/form" class="button-upload" onclick="return tips(${totalCount});">上传资料</a>
         </div>
         <div class="fl tips">
             <p>您可在此栏目上传白皮书等文件资料供观众阅读与下载；</p>
-            <p>您总共可上传10条资料，您已上传 <span class="red">6</span> 条资料。</p>
+            <p>您总共可上传${maxLimit }条资料，您已上传 <span class="red">${totalCount }</span> 条资料。</p>
         </div>
     </div>
     <!-- 表格：资料 -->
     <div class="mt10">
-        <form>
+        <form id="speakerDataForm" method="post">
             <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table">
                 <tr>
                     <th width="55" class="align-center">
@@ -58,11 +53,33 @@
                 </tr>
             </c:forEach>
             </table>
-            <div class="mt20">
-                <input type="button" value="删除" class="button-a" />
-            </div>
+            <c:if test="${fn:length(page.list) > 0 }">
+	            <div class="mt20">
+	                <input type="button" value="删除" class="button-a" id="delete_btn"/>
+	            </div>
+      		</c:if>
         </form>
     </div>
 </div>
+<script type="text/javascript" src="${webSite}/static/web/plugins/uploadify/jquery.uploadify.js"></script>
+<script type="text/javascript" src="${webSite}/static/web/plugins/jquery-validation/1.11.1/jquery.validate.min.js"></script>
+<script type="text/javascript" src="${webSite}/static/web/modules/speaker/js/main.js"></script>
+<script type="text/javascript" src="${webSite}/static/web/js/speaker/speakerData.js"></script>
+<script type="text/javascript">
+   	$(document).ready(function(){
+   		$("#sm_speaker_data").addClass('menu-son-cur');
+   		$("#headCrumbs").append("<span class='em1'>></span>").append("<span>下载资料管理</span>");
+   	});
+
+   	var sessionId = "${pageContext.session.id }";
+   	function tips(count) {
+   		var limit = '${maxLimit }';
+   		if(count >= limit){
+   			alert("您最多可上传" + limit + "条资料,若您需要上传更多资料,请与我们的客服人员联系!");
+   			return false;
+   		}
+   		return true;
+   	}
+</script>
 </body>
 </html>

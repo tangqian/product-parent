@@ -1,8 +1,10 @@
 package com.ofweek.live.core.modules.sys.entity;
 
-import com.ofweek.live.core.common.persistence.DataEntity;
-import com.ofweek.live.core.common.utils.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
+
+import com.ofweek.live.core.common.persistence.DataEntity;
+import com.ofweek.live.core.common.template.Template;
+import com.ofweek.live.core.common.utils.StringUtils;
 
 /**
  * 
@@ -36,6 +38,29 @@ public class SysEmail extends DataEntity<SysEmail> {
 	private Integer subjectType;
 	
 	private java.util.Date sendTime;
+	
+	private Template template;
+
+	private String templatePath;
+	
+	public String getTemplatePath() {
+		return templatePath;
+	}
+
+	public void setTemplatePath(String templatePath) {
+		this.templatePath = templatePath;
+	}
+
+	public Template getTemplate() {
+		if (template == null) {
+			template = new Template();
+		}
+		return template;
+	}
+
+	public void setTemplate(Template template) {
+		this.template = template;
+	}
 
 	public void setSubject(String value) {
 		this.subject = value;
@@ -139,6 +164,10 @@ public class SysEmail extends DataEntity<SysEmail> {
 		private String user;
 
 		private String password;
+		
+		private Integer smtpPort;
+		
+		private String sslSmtpPort;
 
 		private String accountName;
 
@@ -182,6 +211,22 @@ public class SysEmail extends DataEntity<SysEmail> {
 
 		public void setAccount(String account) {
 			this.account = account;
+		}
+
+		public Integer getSmtpPort() {
+			return smtpPort;
+		}
+
+		public void setSmtpPort(Integer smtpPort) {
+			this.smtpPort = smtpPort;
+		}
+
+		public String getSslSmtpPort() {
+			return sslSmtpPort;
+		}
+
+		public void setSslSmtpPort(String sslSmtpPort) {
+			this.sslSmtpPort = sslSmtpPort;
 		}
 	}
 }

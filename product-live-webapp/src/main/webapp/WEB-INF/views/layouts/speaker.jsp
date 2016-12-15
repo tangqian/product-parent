@@ -25,7 +25,7 @@
         <div class="crumb" id="headCrumbs">
             <a href="http://www.ofweek.com" target="_blank">OFweek</a><span class="em1">></span>
             <a href="${webSite}" target="_blank">直播</a><span class="em1">></span>
-            <a href="${ctx}/speaker">主播后台</a>
+            <a href="${ctx}/room">主播后台</a>
         </div>
         <!-- 面包屑 -->
 

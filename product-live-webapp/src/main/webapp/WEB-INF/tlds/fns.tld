@@ -67,6 +67,32 @@
         </function-signature>
         <example>${fns:getPrincipal()}</example>
     </function>
+    
+	<!-- 获取当前直播公司管理的直播列表 -->
+    <function>
+        <description>获取当前直播公司管理的直播列表</description>
+        <name>getRoomList</name>
+        <function-class>com.ofweek.live.core.modules.sys.utils.RoomUtils</function-class>
+        <function-signature>java.util.List getRoomList()</function-signature>
+        <example>${fns:getRoomList()}</example>
+    </function>
+    
+	<!-- 获取直播公司 -->
+    <function>
+        <description>获取当前直播公司管理的直播列表</description>
+        <name>getRoomById</name>
+        <function-class>com.ofweek.live.core.modules.sys.utils.RoomUtils</function-class>
+        <function-signature>com.ofweek.live.core.modules.room.entity.Room getRoomById(java.lang.String)</function-signature>
+        <example>${fns:getRoomById(id)}</example>
+    </function>
+
+    <function>
+        <description>获取直播文件对象实体</description>
+        <name>getSysFile</name>
+        <function-class>com.ofweek.live.core.modules.sys.utils.SysFileUtils</function-class>
+        <function-signature>com.ofweek.live.core.modules.sys.entity.SysFile get(java.lang.String)</function-signature>
+        <example>${fns:getSysFile(id)}</example>
+    </function>
 
     <!-- DictUtils -->
     <function>

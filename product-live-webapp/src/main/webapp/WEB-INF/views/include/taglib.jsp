@@ -8,3 +8,4 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <c:set var="ctxStatic" value="${pageContext.request.contextPath}/static"/>
 <c:set var="webSite" value="${fns:getWebSite()}"/>
+<c:set var="ctxWap" value="${pageContext.request.contextPath}/wap"/>

@@ -81,5 +81,13 @@ public class User extends DataEntity<User> {
 		status = 0;
 	}
 	
-	
+	private String newPassword;
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
 }

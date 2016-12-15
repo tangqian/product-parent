@@ -56,21 +56,9 @@ public class LiveFormAuthenticationFilter extends FormAuthenticationFilter {
 		return WebUtils.isTrue(request, DEFAULT_MOBILE_PARAM);
 	}
 
-	/**
-	 * 登录成功之后跳转URL
-	 */
-	public String getSuccessUrl() {
-		return super.getSuccessUrl();
-	}
-
 	@Override
 	protected void issueSuccessRedirect(ServletRequest request, ServletResponse response) throws Exception {
-		String url = getSuccessUrl();
-		User user = UserUtils.getUser(); 
-		if(user != null && UserTypeEnum.isSpeaker(user.getType())) {
-			url = "speaker";
-		}
-		WebUtils.issueRedirect(request, response, url, null, true);
+		WebUtils.issueRedirect(request, response, getSuccessUrl(), null, true);
 	}
 
 	/**
@@ -79,10 +67,10 @@ public class LiveFormAuthenticationFilter extends FormAuthenticationFilter {
 	@Override
 	protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request, ServletResponse response) {
 		String className = e.getClass().getName(), message = "";
-		if (e instanceof IncorrectCredentialsException || e instanceof UnknownAccountException || e instanceof AuthenticationException) {
-			message = "用户或密码错误, 请重试.";
-		} else if (e.getMessage() != null && StringUtils.startsWith(e.getMessage(), "msg:")) {
+		if (e.getMessage() != null && StringUtils.startsWith(e.getMessage(), "msg:")) {
 			message = StringUtils.replace(e.getMessage(), "msg:", "");
+		} else if (e instanceof IncorrectCredentialsException || e instanceof UnknownAccountException || e instanceof AuthenticationException) {
+			message = "用户或密码错误, 请重试.";
 		} else {
 			message = "系统出现点问题，请稍后再试！";
 			e.printStackTrace(); // 输出到控制台

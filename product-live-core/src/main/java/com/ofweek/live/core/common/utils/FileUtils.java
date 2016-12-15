@@ -423,5 +423,28 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		}
 		return p;
 	}
+	
+	public static String mkdirs(String fileName) {
+		String holdedFileName = handleFileName(fileName);
+		String dir = holdedFileName.substring(0, holdedFileName.lastIndexOf(File.separator) + 1);
+		if(StringUtils.isNotEmpty(dir)) {
+			File dirFile = new File(dir);
+			if(!dirFile.exists()) {
+				dirFile.mkdirs();
+			}
+		}
+		return dir;
+	 }
+		
+	public static String handleFileName(String fileName) {
+		return fileName.replaceAll("/", "\\" + File.separator).replaceAll("\\\\", "\\" + File.separator);
+	}
+	
+	public static String toDirectory(String file) {
+		if(file.lastIndexOf(File.separator) != (file.length() - 1)) {
+			return file + File.separator;
+		}
+		return file;
+	}
 
 }

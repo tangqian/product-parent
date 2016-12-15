@@ -3,10 +3,14 @@ package com.ofweek.live.core.modules.sys.security;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
+import com.google.common.collect.Maps;
+import com.ofweek.live.core.common.servlet.ValidateCodeServlet;
+import com.ofweek.live.core.common.utils.CacheUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -82,6 +86,14 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 		}
 
 		// 校验登录验证码
+		if (isValidateCodeLogin(token.getUsername(), token.getType())){
+			Session session = UserUtils.getSession();
+			String code = (String)session.getAttribute(ValidateCodeServlet.VALIDATE_CODE);
+			if (token.getCaptcha() == null || !token.getCaptcha().toUpperCase().equals(code)){
+				logger.error("用户输入验证码不匹配!, sessionCode={}, inputCode={}", code, token.getCaptcha());
+				throw new AuthenticationException("msg:验证码错误, 请重试.");
+			}
+		}
 
 		// 校验用户名密码
 		if (UserTypeEnum.isAudience(token.getType())) {
@@ -93,9 +105,8 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 			} else {
 				return null;
 			}
-
 		} else {
-			User user = userService.get(token.getUsername(), token.getType());
+			User user = userService.getSpeakerOrWaiter(token.getUsername());
 			if (user != null) {
 				byte[] salt = Encodes.decodeHex(user.getPassword().substring(0, 16));
 				return new SimpleAuthenticationInfo(new Principal(user, token.isMobileLogin()), user.getPassword().substring(16),
@@ -104,6 +115,20 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 				return null;
 			}
 		}
+	}
+
+	public static boolean isValidateCodeLogin(String account, Integer type) {
+		String failKey = account + "_" + type;
+		Map<String, Integer> loginFailMap = (Map<String, Integer>) CacheUtils.get("loginFailMap");
+		if (loginFailMap == null) {
+			loginFailMap = Maps.newHashMap();
+			CacheUtils.put("loginFailMap", loginFailMap);
+		}
+		Integer loginFailNum = loginFailMap.get(failKey);
+		if (loginFailNum == null) {
+			loginFailNum = 0;
+		}
+		return loginFailNum >= 3;
 	}
 
 	/**

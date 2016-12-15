@@ -25,7 +25,7 @@ function PopUp(o) {
     //是否配置关闭按钮
     this.isClose = typeof o.close == 'string' ? true : false;
     //配置了关闭按钮则用配置的按钮，否则用默认的按钮
-    this.$close = this.isClose ? $(o.close) : $('<span class="close-popup"><img src="assets/img/close.png" /></span>');
+    this.$close = this.isClose ? $(o.close) : $('<span class="close-popup"><img src="/static/web/modules/speaker/img/close.png" /></span>');
     //默认关闭点击遮罩关闭弹窗
     this.clickShadeClose = typeof o.clickShadeClose == 'boolean' ? o.clickShadeClose : false;
     //弹窗样式
@@ -43,6 +43,7 @@ PopUp.prototype = {
         $('.shade').remove(); //删除遮罩层
         if(!this.isClose) {
             this.$close.remove(); //删除关闭按钮
+            $('form .table input[type=checkbox]').attr('checked', false);// 取消全部选中
         }
         this.$el.css({'visibility': 'hidden', 'display': 'none'});
     },
@@ -132,7 +133,7 @@ $('body').on('click', '#addPPT, #addVideo, #addData', function() {
         clickShadeClose: true,
         css: {
             position: 'absolute',
-            top: '100px'
+            top: 100+$(window).scrollTop()+'px'
         }
     });
     pptPopup.showPopup();
@@ -143,7 +144,7 @@ $('body').on('click', '#addPPT, #addVideo, #addData', function() {
 $('body').on('keyup input propertychange', '.input-sort', function(e) {
 
     var value = parseInt($(this).val());
-    value = isNaN(value) ? '' : value;
+    value = ( isNaN(value) || (value == '0') )  ? '' : value;
     $(this).val(value);
 
 });
@@ -169,3 +170,72 @@ if( typeof laypage == 'function' ) {
     });
 
 }
+
+
+//查看观众信息弹窗
+(function() {
+
+    var lookInfo = null;
+    
+    //弹窗实例
+    lookInfo = new PopUp({
+        id: '#lookInfo',
+        shade: true,
+        clickShadeClose: true
+    });
+
+    //弹窗：数据报告 - 查看观众
+    $('body').on('click', '.data-username a', function() {
+
+        //请求观众数据
+        $.ajax({
+            url: '',
+            type: 'GET',
+            data: '',
+            dataType: 'JSON',
+            success: function(d) {
+                lookInfo.showPopup();
+            }
+        });
+        
+    });
+    
+    //自定义关闭
+    $('body').on('click', '.pop-tr-close', function() {
+        lookInfo.closePopup();
+    });
+
+})();
+
+
+//聊天记录，展会展开收起
+(function() {
+
+    //默认关闭
+    var chatRecordTabSwitch = false;
+    //tab总数
+    var tabSize = $('#chatRecordTab a').size();
+    //每行3个tab，计算高度
+    var outerH = tabSize % 3 == 0 ? tabSize / 3 * 40 : Math.ceil(tabSize / 3) * 40;
+
+    if (tabSize > 6) {
+        $('#chatRecordTab').css('height', 80);
+        $('.chat-rt').show();
+    }
+
+    $('body').on('click', '.chat-rt', function() {
+
+        if (chatRecordTabSwitch) {
+            $(this).html('展开全部').removeClass('chat-rt-off');
+            $('#chatRecordTab').animate({height: 80}, 400);
+            chatRecordTabSwitch = false;
+            return
+        }
+
+        $(this).html('收起').addClass('chat-rt-off');
+        $('#chatRecordTab').animate({height: outerH}, 400);
+        chatRecordTabSwitch = true; 
+
+    });
+
+})();

@@ -7,8 +7,8 @@
     <a target="_blank" href="${webSite}" class="fl"><img src="${webSite}/static/web/modules/speaker/img/logo.png" height="87" width="200"></a>
     <div class="admin-name"><img src="${webSite}/static/web/modules/speaker/img/admin.png" height="30" width="113"></div>
     <div class="fr topbar-right">
-        <span class="welcome">欢迎您：<a href="javascript:">${fns:getUser().account}</a></span>
-        <a href="javascript:" class="lock"><img src="${webSite}/static/web/modules/speaker/img/lock.png" height="20" width="17">帐号管理</a>
+        <span class="welcome">欢迎您：<a href="${ctx}/room">${fns:getUser().account}</a></span>
+        <a href="${ctx}/speaker/account/security" class="lock"><img src="${webSite}/static/web/modules/speaker/img/lock.png" height="20" width="17">帐号管理</a>
         <a href="${ctx}/logout" class="exit">退出</a>
     </div>
 </div>

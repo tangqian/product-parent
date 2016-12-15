@@ -5,40 +5,46 @@ package com.ofweek.live.core.modules.sys.enums;
  */
 public enum SexEnum {
 
-	SECRET(0, "保密"), MAN(1, "男"), WOMAN(2, "女");
+    SECRET(0, "保密"), MAN(1, "男"), WOMAN(2, "女");
 
-	SexEnum(int code, String meaning) {
-		this.code = code;
-		this.meaning = meaning;
-	}
+    SexEnum(int code, String meaning) {
+        this.code = code;
+        this.meaning = meaning;
+    }
 
-	public int getCode() {
-		return code;
-	}
+    public int getCode() {
+        return code;
+    }
 
-	public String getMeaning() {
-		return meaning;
-	}
+    public String getMeaning() {
+        return meaning;
+    }
 
-	/**
-	 * 获取性别
-	 * 
-	 * @param sex
-	 * @return
-	 */
-	public static SexEnum fromOfweek(Integer sex) {
-		SexEnum sexEnum = SECRET;
-		if (sex != null) {
-			if (sex == 0) {
-				sexEnum = MAN;
-			} else if (sex == 1) {
-				sexEnum = WOMAN;
-			}
-		}
-		return sexEnum;
-	}
+    /**
+     * 获取性别
+     *
+     * @param sex
+     * @return
+     */
+    public static SexEnum fromOfweek(Integer sex) {
+        SexEnum sexEnum = SECRET;
+        if (sex != null) {
+            if (sex == 0) {
+                sexEnum = MAN;
+            } else if (sex == 1) {
+                sexEnum = WOMAN;
+            }
+        }
+        return sexEnum;
+    }
 
-	private final int code;
-	private final String meaning;
+    public static int toOfweek(Integer sex) {
+        if (sex != null && sex == WOMAN.code)
+            return 1;
+        return 0;
+    }
+
+    private final int code;
+    private final String meaning;
 
 }

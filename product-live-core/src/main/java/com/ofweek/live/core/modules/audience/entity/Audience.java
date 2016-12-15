@@ -1,6 +1,11 @@
 package com.ofweek.live.core.modules.audience.entity;
 
+import java.util.Date;
+
 import com.ofweek.live.core.common.persistence.DataEntity;
+import com.ofweek.live.core.modules.room.entity.RoomChat;
+import com.ofweek.live.core.modules.speaker.entity.SpeakerData;
+import com.ofweek.live.core.modules.sys.entity.GeneralUser;
 import com.ofweek.live.core.modules.sys.entity.User;
 import com.ofweek.live.core.modules.sys.enums.SexEnum;
 
@@ -8,7 +13,7 @@ import com.ofweek.live.core.modules.sys.enums.SexEnum;
  * 
  * @author tangqian
  */
-public class Audience extends DataEntity<Audience> {
+public class Audience extends DataEntity<Audience> implements GeneralUser {
 
 	private static final long serialVersionUID = 1L;
 
@@ -26,7 +31,7 @@ public class Audience extends DataEntity<Audience> {
 
 	private String job;
 
-	private Integer logoId;
+	private String logoId;
 
 	private Integer sex;
 
@@ -40,6 +45,29 @@ public class Audience extends DataEntity<Audience> {
 
 	// 1自注册,2会员,3非会员,4推广
 	private Integer bizType;
+
+	private Integer searchType;
+
+	private Date enterDate;
+
+	private SpeakerData speakerData;
+
+	private RoomChat roomChat;
+
+	@Override
+	public String getAccount() {
+		return user.getAccount();
+	}
+
+	@Override
+	public String getEmail() {
+		return user.getEmail();
+	}
+
+	@Override
+	public Integer getType() {
+		return user.getType();
+	}
 
 	public void setCompany(String value) {
 		this.company = value;
@@ -89,11 +117,11 @@ public class Audience extends DataEntity<Audience> {
 		return this.job;
 	}
 
-	public void setLogoId(Integer value) {
+	public void setLogoId(String value) {
 		this.logoId = value;
 	}
 
-	public Integer getLogoId() {
+	public String getLogoId() {
 		return this.logoId;
 	}
 
@@ -165,6 +193,42 @@ public class Audience extends DataEntity<Audience> {
 			sex = SexEnum.SECRET.getCode();
 		if (bizType == null)
 			bizType = 1;
+	}
+
+	public Integer getSearchType() {
+		return searchType;
+	}
+
+	public void setSearchType(Integer searchType) {
+		this.searchType = searchType;
+	}
+
+	public SpeakerData getSpeakerData() {
+		if (speakerData == null)
+			speakerData = new SpeakerData();
+		return speakerData;
+	}
+
+	public void setSpeakerData(SpeakerData speakerData) {
+		this.speakerData = speakerData;
+	}
+
+	public RoomChat getRoomChat() {
+		if (roomChat == null)
+			roomChat = new RoomChat();
+		return roomChat;
+	}
+
+	public void setRoomChat(RoomChat roomChat) {
+		this.roomChat = roomChat;
+	}
+
+	public Date getEnterDate() {
+		return enterDate;
+	}
+
+	public void setEnterDate(Date enterDate) {
+		this.enterDate = enterDate;
 	}
 
 }

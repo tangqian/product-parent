@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -89,6 +91,10 @@ public class NewHttpClient {
 		try {
 			HttpPost post = postForm(url, params);
 			body = invoke(httpclient, post, acceptJson);
+		} catch (UnknownHostException e) {
+			logger.error("发送post请求到地址={}失败,域名解析出错", url);
+		} catch (SocketTimeoutException e) {
+			logger.error("发送post请求到地址={}失败,读取数据超时", url);
 		} catch (Exception e) {
 			logger.error("发送post请求到地址={}失败", url);
 			logger.error("详细信息：", e);
@@ -104,7 +110,19 @@ public class NewHttpClient {
 	 * @param url
 	 */
 	public static String get(String url) {
-		return get(url, false);
+		return get(url, true);
+	}
+
+	public static <T> T get(String url, Class<T> objClass) {
+		String jsonStr = get(url);
+		T result = null;
+		try {
+			result = FastJsonUtils.parseObject(jsonStr.trim(), objClass);
+		} catch (Exception e) {
+			logger.error("json解析为对象失败, url={}", url);
+			logger.error("responseText={}", jsonStr);
+		}
+		return result;
 	}
 
 	/**
@@ -121,11 +139,10 @@ public class NewHttpClient {
 		try {
 			HttpGet get = new HttpGet(url);
 			body = invoke(httpClient, get, acceptJson);
-			CookieStore cookieStore = httpClient.getCookieStore();
-			List<Cookie> cookies = cookieStore.getCookies();
-			for (Cookie cookie : cookies) {
-				System.out.println(cookie);
-			}
+		} catch (UnknownHostException e) {
+			logger.error("发送get请求到地址={}失败,域名解析出错", url);
+		} catch (SocketTimeoutException e) {
+			logger.error("发送get请求到地址={}失败,读取数据超时", url);
 		} catch (Exception e) {
 			logger.error("发送get请求到地址={}失败", url);
 			logger.error("详细信息：", e);
@@ -201,7 +218,7 @@ public class NewHttpClient {
 				}
 			}
 		}
-		logger.info(body);
+		logger.debug(body);
 		return body;
 	}
 
@@ -215,7 +232,11 @@ public class NewHttpClient {
 				nvps.add(new BasicNameValuePair(key, toString(params.get(key))));
 			}
 			try {
-				httpost.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
+				if (url.contains("www.ofweek.com")) {
+					httpost.setEntity(new UrlEncodedFormEntity(nvps, "GBK"));
+				} else {
+					httpost.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
+				}
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}

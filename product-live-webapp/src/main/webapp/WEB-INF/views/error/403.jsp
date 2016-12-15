@@ -36,7 +36,6 @@ else {
 			}
 		%>
 		<div><a href="javascript:" onclick="history.go(-1);" class="btn">返回上一页</a></div>
-		<script>try{top.$.jBox.closeTip();}catch(e){}</script>
 	</div>
 </body>
 </html>

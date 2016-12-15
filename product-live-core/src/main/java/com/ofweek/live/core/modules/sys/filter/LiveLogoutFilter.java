@@ -20,14 +20,7 @@ public class LiveLogoutFilter extends LogoutFilter {
 	protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception {
         Subject subject = getSubject(request, response);
         String redirectUrl = getRedirectUrl(request, response, subject);
-        
-        try {
-            if(response instanceof HttpServletResponse){
-            	WebUtils.removeOfweekCookie((HttpServletResponse)response);
-            }
-            subject.logout();
-        } catch (SessionException ise) {
-        }
+        WebUtils.logout(response);
         issueRedirect(request, response, redirectUrl);
         return false;		
 	}

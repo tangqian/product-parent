@@ -1,14 +1,19 @@
 package com.ofweek.live.core.modules.speaker.entity;
 
 import com.ofweek.live.core.common.persistence.DataEntity;
+import com.ofweek.live.core.modules.sys.entity.EnterpriseUser;
+import com.ofweek.live.core.modules.sys.entity.GeneralUser;
+import com.ofweek.live.core.modules.sys.entity.User;
 
 /**
  * 
  * @author tangqian
  */
-public class Speaker extends DataEntity<Speaker> {
+public class Speaker extends DataEntity<Speaker> implements GeneralUser , EnterpriseUser {
 
 	private static final long serialVersionUID = 1L;
+
+	private User user;
 	
 	private String company;
 	
@@ -20,7 +25,7 @@ public class Speaker extends DataEntity<Speaker> {
 	
 	private String job;
 	
-	private Integer logoId;
+	private String logoId;
 	
 	private Integer sex;
 	
@@ -32,10 +37,49 @@ public class Speaker extends DataEntity<Speaker> {
 	
 	private String fax;
 
+	private String email;
+
+	private String url;
+	
+	public Speaker() {
+		
+	}
+	
+	public Speaker(String id) {
+		this.id = id;
+	}
+
 	public void setCompany(String value) {
 		this.company = value;
 	}
-	
+
+	@Override
+	public String getAccount() {
+		return user.getAccount();
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	@Override
+	public String getEmail() {
+		if(email == null){
+			return user.getEmail();
+		}
+		return email;
+	}
+
+	@Override
+	public Integer getType() {
+		return user.getType();
+	}
+
+	@Override
+	public String getSpeakerId() {
+		return id;
+	}
+
 	public String getCompany() {
 		return this.company;
 	}
@@ -72,11 +116,11 @@ public class Speaker extends DataEntity<Speaker> {
 		return this.job;
 	}
 	
-	public void setLogoId(Integer value) {
+	public void setLogoId(String value) {
 		this.logoId = value;
 	}
 	
-	public Integer getLogoId() {
+	public String getLogoId() {
 		return this.logoId;
 	}
 	
@@ -119,5 +163,21 @@ public class Speaker extends DataEntity<Speaker> {
 	public String getFax() {
 		return this.fax;
 	}
-	
+
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 }

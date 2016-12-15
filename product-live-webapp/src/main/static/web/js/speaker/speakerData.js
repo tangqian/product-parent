@@ -2,7 +2,7 @@ $(function() {
 	
 	$("#fileField").uploadify({
 	    'swf': webSite + '/static/web/plugins/uploadify/swf/uploadify.swf?var=' + (new Date()).getTime(),
-	    'uploader': ctx + '/sys/file/upload?var=' + (new Date()).getTime(),
+	    'uploader': ctx + '/sys/file/upload?var=' + (new Date()).getTime() + "&__sid=" + sessionId,
 	    'height': 30,
 	    // 设置文件浏览按钮的高度
 	    'width': 120,
@@ -31,7 +31,7 @@ $(function() {
 			//alert(data);
 	        var info = eval("(" + data + ")");
 			if(info.status == "0"){
-				$("#fileName").html(file.name);
+				$("#name").val(file.name);
 				$("#fileId").val(info.fileId);
 			}else{
 				alert("上传资料失败！");
@@ -39,6 +39,9 @@ $(function() {
 	    },
 	    'onUploadError' : function(file, errorCode, errorMsg, errorString) {
 			onSelectError(file, errorCode, errorMsg);
+	    },
+	    'onSelectError' : function(file, errorCode, errorMsg) {
+	    	onSelectError(file, errorCode, errorMsg);
 	    }
 	});
 
@@ -64,4 +67,57 @@ $(function() {
 	    	break;
 	    }
 	}
+   
+	$('#delete_btn').on('click', function(){
+		var flag = false;
+		var dataIds = "";
+		$("input[name=dataId]:checkbox").each(function() {
+			if(this.checked){
+				flag = true;
+				dataIds += $(this).val() + ","
+			}
+		});
+		if (!flag) {
+			alert("请选择要删除的资料!");
+			return false;
+		} else if (confirm("您确定要删除选择的资料吗?")) {
+			$.ajax({
+				url : "/speaker/data/delete",
+				type:"POST", 
+				data : {
+					dataIds : dataIds
+				},
+				success : function(data) {
+					if (data.status == "0") {
+						location.reload();
+					} else {
+						if(data.msg){
+							alert(data.msg);
+						}else{
+							alert("删除资料失败!");
+						}
+					}
+				}
+			});
+		}
+	});
+	
+	$('#save_btn').on('click', function(){
+		var options = {
+			type:"POST", 
+			contentType:"application/json",
+			url : '/speaker/data/asyncCheckDataName',
+			data : JSON.stringify({id : $('#id').val(), name : $('#name').val()}),
+			success : function(data){
+				if (data.status == "0") {
+					$('#inputForm').submit();
+				} else if (data.status == "1"){
+					alert("资料名称重复!");
+				} else {
+					alert("上传资料失败!");
+				}
+			}
+		};
+		$.ajax(options);
+	});
 });

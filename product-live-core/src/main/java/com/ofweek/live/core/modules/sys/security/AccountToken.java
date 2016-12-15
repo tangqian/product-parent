@@ -4,33 +4,41 @@ import org.apache.shiro.authc.AuthenticationToken;
 
 /**
  * 单账号token
- * @author tangqian
  *
+ * @author tangqian
  */
 public class AccountToken implements AuthenticationToken {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private String account;
-	
-	public AccountToken() {
-	}
 
-	public AccountToken(String account) {
-		this.account = account;
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	public Object getPrincipal() {
-		return account;
-	}
+    private String account;
 
-	@Override
-	public Object getCredentials() {
-		return account;
-	}
+    public AccountToken() {
+    }
+
+    public AccountToken(String account) {
+        this.account = account;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    @Override
+    public Object getPrincipal() {
+        return account;
+    }
+
+    @Override
+    public Object getCredentials() {
+        return account;
+    }
 
 }

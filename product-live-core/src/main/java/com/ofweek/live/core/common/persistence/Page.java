@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.ofweek.live.core.common.config.Global;
 import com.ofweek.live.core.common.utils.CookieUtils;
 
@@ -84,6 +83,9 @@ public class Page<T> {
 		// 设置页面大小参数（传递repage参数，来记住页码大小）
 		String size = request.getParameter("pageSize");
 		if (StringUtils.isNumeric(size)){
+		    if(Integer.valueOf(size) > 200){
+		        size = "200";
+		    }
 			CookieUtils.setCookie(response, "pageSize", size);
 			this.setPageSize(Integer.parseInt(size));
 		}else if (request.getParameter("repage")!=null){
@@ -254,10 +256,9 @@ public class Page<T> {
 					+ "下一页 &#187;</a></li>\n");
 		}
 
-		sb.append("<li class=\"disabled controls\"><a href=\"javascript:\">当前 ");
-		sb.append("<input type=\"text\" value=\""+pageNo+"\" onkeypress=\"var e=window.event||this;var c=e.keyCode||e.which;if(c==13)");
-		sb.append(funcName+"(this.value,"+pageSize+",'"+funcParam+"');\" onclick=\"this.select();\"/> / ");
-		sb.append("<input type=\"text\" value=\""+pageSize+"\" onkeypress=\"var e=window.event||this;var c=e.keyCode||e.which;if(c==13)");
+		sb.append("<li class=\"disabled controls\"><a href=\"javascript:\">每页 ");
+		//sb.append("<input type=\"text\" value=\""+pageNo+"\"  onclick=\"this.select();\"/> / ");
+		sb.append("<input type=\"text\" value=\""+pageSize+"\" onchange=\"");
 		sb.append(funcName+"("+pageNo+",this.value,'"+funcParam+"');\" onclick=\"this.select();\"/> 条，");
 		sb.append("共 " + count + " 条"+(message!=null?message:"")+"</a></li>\n");
 
@@ -342,7 +343,6 @@ public class Page<T> {
 	 * 首页索引
 	 * @return
 	 */
-	@JSONField(serialize = false)
 	public int getFirst() {
 		return first;
 	}
@@ -351,7 +351,6 @@ public class Page<T> {
 	 * 尾页索引
 	 * @return
 	 */
-	@JSONField(serialize = false)
 	public int getLast() {
 		return last;
 	}
@@ -360,7 +359,6 @@ public class Page<T> {
 	 * 获取页面总数
 	 * @return getLast();
 	 */
-	@JSONField(serialize = false)
 	public int getTotalPage() {
 		return getLast();
 	}
@@ -369,7 +367,6 @@ public class Page<T> {
 	 * 是否为第一页
 	 * @return
 	 */
-	@JSONField(serialize = false)
 	public boolean isFirstPage() {
 		return firstPage;
 	}
@@ -378,7 +375,6 @@ public class Page<T> {
 	 * 是否为最后一页
 	 * @return
 	 */
-	@JSONField(serialize = false)
 	public boolean isLastPage() {
 		return lastPage;
 	}
@@ -387,7 +383,6 @@ public class Page<T> {
 	 * 上一页索引值
 	 * @return
 	 */
-	@JSONField(serialize = false)
 	public int getPrev() {
 		if (isFirstPage()) {
 			return pageNo;
@@ -400,7 +395,6 @@ public class Page<T> {
 	 * 下一页索引值
 	 * @return
 	 */
-	@JSONField(serialize = false)
 	public int getNext() {
 		if (isLastPage()) {
 			return pageNo;
@@ -431,7 +425,6 @@ public class Page<T> {
 	 * 获取查询排序字符串
 	 * @return
 	 */
-	@JSONField(serialize = false)
 	public String getOrderBy() {
 		// SQL过滤，防止注入 
 		String reg = "(?:')|(?:--)|(/\\*(?:.|[\\n\\r])*?\\*/)|"
@@ -455,7 +448,6 @@ public class Page<T> {
 	 * function ${page.funcName}(pageNo){location="${ctx}/list-${category.id}${urlSuffix}?pageNo="+i;}
 	 * @return
 	 */
-	@JSONField(serialize = false)
 	public String getFuncName() {
 		return funcName;
 	}
@@ -472,7 +464,6 @@ public class Page<T> {
 	 * 获取分页函数的附加参数
 	 * @return
 	 */
-	@JSONField(serialize = false)
 	public String getFuncParam() {
 		return funcParam;
 	}
@@ -497,7 +488,6 @@ public class Page<T> {
 	 * 分页是否有效
 	 * @return this.pageSize==-1
 	 */
-	@JSONField(serialize = false)
 	public boolean isDisabled() {
 		return this.pageSize==-1;
 	}
@@ -506,7 +496,6 @@ public class Page<T> {
 	 * 是否进行总数统计
 	 * @return this.count==-1
 	 */
-	@JSONField(serialize = false)
 	public boolean isNotCount() {
 		return this.count==-1;
 	}

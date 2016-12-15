@@ -1,23 +1,26 @@
 package com.ofweek.live.core.modules.sys.service;
 
-import com.ofweek.live.core.common.beanvalidator.BeanValidators;
-import com.ofweek.live.core.common.config.LiveEnv;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validator;
+
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ofweek.live.core.common.utils.StringUtils;
+import com.google.common.collect.Maps;
+import com.ofweek.live.core.common.beanvalidator.BeanValidators;
+import com.ofweek.live.core.common.config.LiveEnv;
 import com.ofweek.live.core.common.service.CrudService;
-import com.ofweek.live.core.modules.sys.utils.SequenceUtils;
-
+import com.ofweek.live.core.common.utils.GeneratorTemplateUtils;
+import com.ofweek.live.core.common.utils.StringUtils;
 import com.ofweek.live.core.modules.sys.dao.SysEmailDao;
 import com.ofweek.live.core.modules.sys.entity.SysEmail;
-
-import javax.annotation.Resource;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Validator;
-import java.util.List;
+import com.ofweek.live.core.modules.sys.utils.SequenceUtils;
 
 /**
  * 
@@ -43,6 +46,8 @@ public class SysEmailService extends CrudService<SysEmailDao, SysEmail> {
 		ACCOUNT.setPassword(LiveEnv.getConfig("email.password"));
 		ACCOUNT.setAccount(LiveEnv.getConfig("email.account"));
 		ACCOUNT.setAccountName(LiveEnv.getConfig("email.accountName"));
+		ACCOUNT.setSmtpPort(Integer.valueOf(LiveEnv.getConfig("email.smtpPort")));
+		ACCOUNT.setSslSmtpPort(LiveEnv.getConfig("email.sslSmtpPort"));
 	}
 	
 	@Override
@@ -128,8 +133,10 @@ public class SysEmailService extends CrudService<SysEmailDao, SysEmail> {
 		HtmlEmail email = new HtmlEmail();
 		email.setHostName(emailAccount.getSmtpServer());
 		email.setAuthentication(emailAccount.getUser(), emailAccount.getPassword());
-		email.setCharset("UTF-8");
+		email.setSmtpPort(emailAccount.getSmtpPort());
+		email.setSslSmtpPort(emailAccount.getSslSmtpPort());
 		email.setHtmlMsg(entity.getContent());
+		email.setCharset("UTF-8");
 		email.setFrom(emailAccount.getAccount(), emailAccount.getAccountName());
 		email.setSubject(entity.getSubject());
 		email.addTo(entity.getReceiver());
@@ -143,7 +150,8 @@ public class SysEmailService extends CrudService<SysEmailDao, SysEmail> {
 				email.addBcc(bcc);
 			}
 		}
+		
 		email.send();
 	}
-    
+	
 }

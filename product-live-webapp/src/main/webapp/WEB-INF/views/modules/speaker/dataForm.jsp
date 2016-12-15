@@ -15,6 +15,7 @@
             $("#headCrumbs").append("<span class='em1'>></span>").append("<a href='${ctx}/speaker/data/list'>下载资料管理</a>")
                     .append("<span class='em1'>></span>").append("<span>${title}资料</span>");
         })
+        var sessionId = "${pageContext.session.id }";
     </script>
 </head>
 
@@ -24,8 +25,9 @@
     <h1 class="page-title">${title}资料</h1>
     <!-- 上传资料 -->
     <form:form id="inputForm" modelAttribute="data" action="${ctx}/speaker/data/save" method="post">
-        <form:hidden path="id"/>
-        <form:hidden path="fileId"/>
+        <form:hidden path="id" id="id"/>
+        <form:hidden path="fileId" id="fileId"/>
+        <input type="hidden" id="sessionId" value="${pageContext.session.id}" />
         <div class="mt5 upload-container">
             <dl class="clearfix upc-box">
                 <dt>
@@ -33,13 +35,20 @@
                 </dt>
                 <dd>
                     <input type="file" name="file" class="file" id="fileField" />
-                    <span id="fileName">${data.name}</span>
                     <p class="tips upc-tips">
-                        资料大小不能超过20MB，仅支持doc、docx、pdf、xls、xlsx、rar、zip格式文件。
+                       	 资料大小不能超过20MB，仅支持doc、docx、pdf、xls、xlsx、rar、zip格式文件。
                     </p>
                 </dd>
             </dl>
-            <input type="submit" value="保 存" class="button-b upc-save" />
+            <dl class="clearfix upc-box">
+                <dt>
+                    <span class="red-start">*</span>文件名：
+                </dt>
+                <dd>
+                    <input type="text" readonly="readonly" class="upc-name" style="width: 315px;" value="${data.name}" id="name">
+                </dd>
+            </dl>
+            <input type="button" value="保 存" class="button-b upc-save" id="save_btn"/>
         </div>
     </form:form>
 </div>

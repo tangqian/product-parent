@@ -181,6 +181,9 @@ img{ vertical-align: middle; }
 .em1{ padding: 0 .5em; }
 .em2{ padding: 0 1em; }
 
+/* 行高 */
+.line-h30{ line-height: 30px; }
+
 /* 宽度 */
 .w1000{ width: 1000px; margin-left: auto; margin-right: auto; }
 .w830{ width: 830px; }
@@ -193,6 +196,7 @@ img{ vertical-align: middle; }
 .mt30{ margin-top: 30px; }
 
 /* 右边距 */
+.mr10{ margin-right: 10px; }
 .mr20{ margin-right: 20px; }
 
 /* 字体颜色 */
@@ -245,13 +249,14 @@ a.blue:hover{ text-align: center; }
 .exit { float: right; width: 68px; margin: 29px 0 0; height: 28px; line-height: 28px; text-align: center; border-radius: 2px; border: 1px solid #dbdbdb; transition: border-color 0.2s, box-shadow 0.2s; }
 .exit:hover { border-color: #ff7e00; box-shadow: 0 0 4px 0 #dbdbdb; text-decoration: none; }
 
-/* 页脚 */
-.footer{ width:100%; margin: 60px 0 0; border-top:solid 1px #ddd; font-size:12px; }
-.footer .foot{ position:relative; width: 1000px; padding:20px 0; margin: 0 auto; }
-.footer .foot p{ font-size:12px; color:#666; }
-.footer .foot a{ margin:0 5px; }
-.footer .foot .fr{ padding-right:160px; }
-.footer .foot .beian{ position:absolute; top:8px; right:0; }
+/*footer*/
+.footer{overflow: hidden;width: 100%; height: 103px; margin: 60px 0 0;font-family: "SimSun";background: #ffffff;border-top:solid 1px #ddd;min-width:1000px;font-size:12px;}
+.footer .foot{position:relative;width: 1000px;padding: 0;margin: 0 auto; text-align: center;}
+.footer-links{ float: left; padding: 26px 0 0 0; line-height: 24px; }
+.copyright{ float: left; padding: 26px 120px 26px 50px; line-height: 24px; color: #666; background: url("http://live.ofweek.com/static/web/img/110.gif") right center no-repeat; }
+.footer .foot p{ margin-left: 0; }
+.pad15{padding-top: 15px;}
+.foot-wrap{ display: inline-block; *display: inline; *zoom: 1; }
 
 /* 面包屑 */
 .crumb{ height: 40px; line-height: 40px; color: #666; }
@@ -272,15 +277,16 @@ a.blue:hover{ text-align: center; }
 .menu-son-cur a, .menu-son-cur a:hover{ color: #fff; background: url(../img/menu_son_cur.png) right center no-repeat #f3f3f3; }
 .menu-cur{ background-position: 125px 0; } /* 当前项的图标显示 */
 .menu-cur .menu-son{ display: block; } /* 当前项的二级菜单显示 */
+.menu-active .ol-title{ color: #cc0000; }
 
 /* ----- 下载资料管理 ----- */
 .page-title{ padding: 8px 0 0; font: bold 18px/35px "Microsoft Yahei"; color: #333; }
 .tips{ margin-top: -2px; color: #999; line-height: 18px; }
 /* 表格 */
-.table th{ height: 40px; font-size: 14px; line-height: 40px; border-top: 1px solid #dbdbdb; background: #f3f3f3; }
+.table th{ height: 40px; font-size: 13px; line-height: 40px; border-top: 1px solid #dbdbdb; background: #f3f3f3; }
 .table td{ padding: 8px 0; line-height: 18px; border-bottom: 1px dashed #dbdbdb; }
 .table tr:hover td{ background: #f9f9f9; }
-.not-pass, .pass, .wait-pass{ display: inline-block; *display: inline; *zoom: 1; width: 5em; padding: 0 .5em; color: #fff; background: #ff0000; }
+.not-pass, .pass, .wait-pass{ display: inline-block; *display: inline; *zoom: 1; width: 5em; padding: 0 .5em; text-align: center; color: #fff; background: #ff0000; }
 .pass{ background: #5ea000; }
 .wait-pass{ background: #999; }
 .checkbox-a{ width: 15px; height: 15px; padding: 0; vertical-align: middle; border: 1px solid #ccc; background: #fff; }
@@ -289,7 +295,7 @@ a.blue:hover{ text-align: center; }
 .upload-container{ padding: 20px 0 0; border-top: 1px solid #dbdbdb; }
 .upc-box{ margin: 20px 0 0; }
 .upc-box dt{ float: left; width: 140px; padding: 0 10px 0 0; text-align: right; line-height: 30px; font-size: 14px; }
-.upc-box dd{ float: left; }
+.upc-box dd{ float: left; font-size: 14px;width:680px\9; }
 .upc-btn{ margin: 3px 0 0; font-size: 14px; }
 .upc-tips{ margin-top: 15px; }
 .upc-name{ width: 240px; height: 18px; padding: 5px; line-height: 18px; border: 1px solid #ccc; outline: none; }
@@ -305,7 +311,7 @@ a.blue:hover{ text-align: center; }
 .upload-view img{ max-width: 100%; max-height: 100%; vertical-align: middle; }
 .upload-view:after{ display: inline-block; *display: inline; *zoom: 1; width: 1px; height: 100%; margin-right: -1px; content: ""; vertical-align: middle; }
 .upv-btn{ font-size: 14px; }
-.upv-r .tips{ margin: 5px 0 0; line-height: 16px; }
+.upv-r .tips{ margin: 5px 0 0; font-size: 12px; line-height: 16px; }
 
 /* ----- PPT管理 ----- */
 .upload-ppt{ background: url(../img/btn_upload_ppt.png) center no-repeat; }
@@ -332,7 +338,43 @@ a.live-data-back:hover{ background: #f4f4f4; }
 .adp-bd .not-pass{ margin: 0 0 0 10px; }
 .adp-submit{ margin: 20px 0 0 20px; }
 
+/* ----- 帐号管理 ----- */
+.service-photo{ margin: 0 0 0 22px; }
+.service-name{ margin: 0 0 0 5px; vertical-align: middle; }
+td.setSer-handle{ padding: 0 0 0 20px; }
+.setSer-handle .button-a{ padding: 0 1em; margin: 0 3px; }
+.account-container{ padding: 20px 0 0; border-top: 1px solid #dbdbdb; }
+.acc-tips{ margin: 0 0 0 20px; font-size: 14px; line-height: 30px; }
+.acc-btn{ margin: 3px 0 0; font-size: 14px; }
+.error-tips{ color: #ff0000; }
+/* 帐号安全 */
+.account-state{ margin: 6px 20px 0; }
+.acc-suc{ margin: 30px 0 0 100px; font-size: 14px; }
+.acc-suc span{ margin: 0 0 0 10px; vertical-align: middle; }
 
+/* ----- 数据报告 ----- */
+.page-title-min{ margin: 0 0 0 15px; font: normal 14px/100% SimSun; }
+.query-input{ width: 220px; vertical-align: top; }
+.query-select{ display: inline; height: 30px; margin: 0 5px; border: 1px solid #ccc; outline: none; vertical-align: top; }
+.query-submit{ height: 30px; padding: 0 1em; line-height: 30px; border-radius: 3px; vertical-align: top; }
+.data-table td.align-left{ padding: 0 10px; word-break:break-all }
+/* 弹窗：查看观众 */
+.popup-top-red{ display: none; position: fixed; left: 50%; top: 100px; width: 400px; margin-left: -200px; background: #fff; border: 1px solid #dbdbdb; border-top: 2px solid #cc0000; }
+.pop-tr-hd{ height: 50px; font: normal 16px/50px "Microsoft Yahei"; text-align: center; background: #f3f3f3; }
+.pop-tr-bd ul{ padding: 10px 0 0 80px; font-size: 14px; }
+.pop-tr-bd li{ margin: 15px 0 0; vertical-align: top; }
+.pop-tr-bd li span{ width: 200px; padding: 0 0 0 10px; }
+.pop-tr-close{ display: block; margin: 30px auto; }
+/* 聊天观众 */
+.see-all-chat{ font: normal 12px/100% SimSun; }
+.all-chat-input{ overflow-y: auto; width: 288px; height: 68px; padding: 3px 5px; margin: 0 auto; text-align: left; vertical-align: top; resize: vertical; border: 1px solid #ccc; background: #fff; outline: none; }
 
-
-
+/* ----- 聊天记录 ----- */
+.chat-record-tab{ overflow: hidden; width: 828px; border-top: 1px solid #dbdbdb; border-left: 1px solid #dbdbdb; }
+.chat-record-tab a{ float: left; width: 275px; height: 39px; font-size: 14px; line-height: 39px; text-align: center; border-right: 1px solid #dbdbdb; border-bottom: 1px solid #dbdbdb; transition: background 0.2s; }
+.chat-record-tab a:link,.chat-record-tab a:visited{ background: #eeeeee; }
+.chat-record-tab a:hover, .chat-record-tab a.current{ color: #fff; font-weight: bold; background: #aaa; text-decoration: none; }
+.chat-record-tab a.current{ background: #cc0000; }
+.chat-rt{ display: none; width: 828px; height: 25px; color: #868686; font-size: 12px; line-height: 25px; text-align: center; background: url(../img/chat_rt.png) 445px 0 no-repeat #f3f3f3; cursor: pointer; }
+.chat-rt-off{ background-position: 445px -25px; }
+.chat-content li{ padding: 15px; line-height: 18px; word-break: break-all; border-bottom: 1px dashed #dbdbdb; }

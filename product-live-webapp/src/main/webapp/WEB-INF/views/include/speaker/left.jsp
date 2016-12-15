@@ -13,7 +13,7 @@
                 </p>
                 <!-- 二级 -->
                 <ul class="menu-son">
-                    <li class="two-level"><a id="subMenu_liveManager" href="javascript:">管理直播</a></li>
+                    <li class="two-level" id="sm_room_live"><a href="${ctx}/room">管理直播</a></li>
                 </ul>
             </li>
             <li class="one-level menu-cur">
@@ -25,9 +25,9 @@
                 <ul class="menu-son">
                     <!-- 选中的二级菜单项添加样式：menu-son-cur -->
                     <li class="two-level" id="sm_speaker_data"><a href="${ctx}/speaker/data">下载管理</a></li>
-                    <li class="two-level"><a href="javascript:">视频管理</a></li>
-                    <li class="two-level"><a href="javascript:">PPT管理</a></li>
-                    <li class="two-level"><a href="javascript:">资料回收站</a></li>
+                    <li class="two-level" id="sm_speaker_video"><a href="${ctx}/speaker/video">视频管理</a></li>
+                    <li class="two-level" id="sm_speaker_speech"><a href="${ctx}/speaker/speech">PPT管理</a></li>
+                    <li class="two-level" id="sm_speaker_data_recycle"><a href="${ctx}/speaker/recycle">资料回收站</a></li>
                 </ul>
             </li>
             <li class="one-level menu-cur">
@@ -37,14 +37,14 @@
                 </p>
                 <!-- 二级 -->
                 <ul class="menu-son">
-                    <li class="two-level"><a href="javascript:">观众数据</a></li>
+                    <li class="two-level" id="sm_audience_data"><a href="${ctx}/speaker/audience/data">观众数据</a></li>
                 </ul>
             </li>
             <!-- 没有子级需要添加样式：no-clild 不显示箭头图标 -->
-            <li class="one-level no-child">
+            <li class="one-level no-child" id="sm_room_chat">
                 <p class="ol-title">
                     <img src="${webSite}/static/web/modules/speaker/img/menu_4.png" />
-                    <strong>聊天记录</strong>
+               		<a href="/room/chat/list" style="text-decoration: none;"><strong>聊天记录</strong></a>
                 </p>
             </li>
             <li class="one-level menu-cur">
@@ -54,9 +54,9 @@
                 </p>
                 <!-- 二级 -->
                 <ul class="menu-son">
-                    <li class="two-level"><a href="javascript:">设置客服</a></li>
-                    <li class="two-level"><a href="javascript:">账号安全</a></li>
-                    <li class="two-level"><a href="javascript:">联系方式</a></li>
+                    <li class="two-level" id="sm_waiter_manage"><a href="${ctx}/speaker/waiter">设置客服</a></li>
+                    <li class="two-level" id="sm_security_manage"><a href="${ctx}/speaker/account/security">账号安全</a></li>
+                    <li class="two-level" id="sm_speaker_contacts"><a href="${ctx}/speaker/account/contacts">联系方式</a></li>
                 </ul>
             </li>
         </ul>

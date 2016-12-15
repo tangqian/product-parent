@@ -25,6 +25,14 @@ public class SpeakerData extends DataEntity<SpeakerData> {
 	private java.util.Date auditTime;
 	
 	private String auditReason;
+	
+	public SpeakerData() {
+		
+	}
+	
+	public SpeakerData(String speakerId) {
+		this.speakerId = speakerId;
+	}
 
 	public void setSpeakerId(String value) {
 		this.speakerId = value;

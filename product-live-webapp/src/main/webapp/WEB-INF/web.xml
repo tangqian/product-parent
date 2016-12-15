@@ -25,6 +25,9 @@
 	<listener>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>  
 	</listener>
+	<listener>
+		<listener-class>com.ofweek.live.nio.common.listener.NioServerServletListener</listener-class>
+	</listener>
 	
 	<filter>
 		<filter-name>encodingFilter</filter-name>

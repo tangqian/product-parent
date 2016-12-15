@@ -21,5 +21,9 @@ public class AccessKeyUtils {
 		}
     	return StringUtils.toHex(bytes);
     }
-    
+
+	public static void main(String[] args) {
+		System.out.println(encode("64", "www", "ofweek"));
+	}
+
 }

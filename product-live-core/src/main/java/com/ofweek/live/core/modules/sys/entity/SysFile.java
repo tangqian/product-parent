@@ -1,5 +1,6 @@
 package com.ofweek.live.core.modules.sys.entity;
 
+import com.ofweek.live.core.common.config.LiveEnv;
 import com.ofweek.live.core.common.persistence.DataEntity;
 
 /**
@@ -21,6 +22,10 @@ public class SysFile extends DataEntity<SysFile> {
 	private Integer isTemp;
 	
 	private Integer type;
+
+	private Integer sort;
+
+	private String parentId;
 	
 	private Integer subjectType;
 	
@@ -88,6 +93,26 @@ public class SysFile extends DataEntity<SysFile> {
 	
 	public String getCreateBy() {
 		return this.createBy;
+	}
+
+	public String getUrl(){
+		return LiveEnv.getUploadUrlPrefix() + uri;
+	}
+
+	public String getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
+
+	public Integer getSort() {
+		return sort;
+	}
+
+	public void setSort(Integer sort) {
+		this.sort = sort;
 	}
 
 	@Override
